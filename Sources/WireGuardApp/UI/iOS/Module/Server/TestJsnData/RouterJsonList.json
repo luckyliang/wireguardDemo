@@ -1,0 +1,37 @@
+{
+ "code":0,
+  "msg":"请求成功",
+  "data":{
+      "list": [
+          
+          {
+            "name": "测试2",
+            "interface":{
+                "dns": "8.8.8.8, 1.1.1.1",
+                "address": "10.9.3.249/32",
+                "privateKey":"SLsy5SpPJoxGhbQ7JawKH7ALSBBsRMqs/QtNe1yfCX0="
+             },
+            "peer": {
+                "endPoint": "36.133.11.77:56510",
+                "allowedIps": "0.0.0.0/1, 128.0.0.0/1, ::/0",
+                "persistentKeepalive": "25",
+                "publicKey": "xjxqWAdymT/HnQXsHhuRMs8loSx0xdXq6+V9+XnRvw0="
+            }
+          },
+          {
+            "name": "测试2",
+            "interface":{
+                "dns": "8.8.8.8, 1.1.1.1",
+                "address": "10.9.3.249/32",
+                "privateKey":"SLsy5SpPJoxGhbQ7JawKH7ALSBBsRMqs/QtNe1yfCX0="
+             },
+            "peer": {
+                "endPoint": "36.133.11.77:56510",
+                "allowedIps": "0.0.0.0/1, 128.0.0.0/1, ::/0",
+                "persistentKeepalive": "25",
+                "publicKey": "xjxqWAdymT/HnQXsHhuRMs8loSx0xdXq6+V9+XnRvw0="
+            }
+          }
+       ]
+   }
+}

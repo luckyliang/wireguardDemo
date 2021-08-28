@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="WireGuard" customModuleProvider="target">
             <connections>
+                <outlet property="_connectBtn" destination="xpd-to-Le4" id="M9j-z8-nkt"/>
                 <outlet property="imageCycleBgView" destination="IPM-Ka-Asw" id="bqT-DK-pUi"/>
                 <outlet property="modelType" destination="tE1-ME-dq2" id="xP8-Rp-M7b"/>
                 <outlet property="returnRoute" destination="BLm-m8-wVo" id="dGv-Y8-M9s"/>
@@ -65,8 +66,8 @@
                                             <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="回国-ViP路线回国-ViP路线回国-ViP路线回国-ViP路线回国-ViP路线回国-ViP路线回国-ViP路线" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BLm-m8-wVo">
-                                            <rect key="frame" x="36" y="7" width="218" height="18"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BLm-m8-wVo">
+                                            <rect key="frame" x="36" y="16" width="0.0" height="0.0"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>

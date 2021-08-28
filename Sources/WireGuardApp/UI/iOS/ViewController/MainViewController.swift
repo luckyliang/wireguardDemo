@@ -7,6 +7,8 @@ class MainViewController: UISplitViewController {
 
     var tunnelsManager: TunnelsManager?
     var onTunnelsManagerReady: ((TunnelsManager) -> Void)?
+
+    //首页listVC
     var tunnelsListVC: TunnelsListTableViewController?
 
     init() {

@@ -13,8 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-       _configTestDemo()
-
+//        _configOrginDemo(application, willFinishLaunchingWithOptions: launchOptions)
+        _configTestDemo()
         return true
     }
 

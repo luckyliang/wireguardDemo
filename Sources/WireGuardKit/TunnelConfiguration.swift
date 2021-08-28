@@ -3,10 +3,11 @@
 
 import Foundation
 
+//通道配置模型
 public final class TunnelConfiguration {
-    public var name: String?
-    public var interface: InterfaceConfiguration
-    public let peers: [PeerConfiguration]
+    public var name: String?    //名称
+    public var interface: InterfaceConfiguration //客服端接口
+    public let peers: [PeerConfiguration]        //客户端对端
 
     public init(name: String?, interface: InterfaceConfiguration, peers: [PeerConfiguration]) {
         self.interface = interface

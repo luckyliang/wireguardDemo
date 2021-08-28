@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 // Copyright © 2018-2021 WireGuard LLC. All Rights Reserved.
-
+//配置规则
 import NetworkExtension
 
 enum ActivateOnDemandOption: Equatable {
     case off
-    case wiFiInterfaceOnly(ActivateOnDemandSSIDOption)
-    case nonWiFiInterfaceOnly
-    case anyInterface(ActivateOnDemandSSIDOption)
+    case wiFiInterfaceOnly(ActivateOnDemandSSIDOption) //仅在wifi状态下开启
+    case nonWiFiInterfaceOnly   //仅不在wifi状态下开启
+    case anyInterface(ActivateOnDemandSSIDOption) //任意状态
 }
 
 #if os(iOS)
@@ -25,6 +25,8 @@ enum ActivateOnDemandSSIDOption: Equatable {
 }
 
 extension ActivateOnDemandOption {
+
+    //按需开启VPN配置规则
     func apply(on tunnelProviderManager: NETunnelProviderManager) {
         let rules: [NEOnDemandRule]?
         switch self {

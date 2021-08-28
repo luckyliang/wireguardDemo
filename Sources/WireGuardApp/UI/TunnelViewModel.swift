@@ -5,15 +5,16 @@ import Foundation
 
 class TunnelViewModel {
 
+    //接口
     enum InterfaceField: CaseIterable {
         case name
         case privateKey
         case publicKey
-        case generateKeyPair
-        case addresses
-        case listenPort
-        case mtu
-        case dns
+        case generateKeyPair    //密匙对
+        case addresses          //客户端IP地址段
+        case listenPort         //监听端口
+        case mtu                //最大传输单元
+        case dns                //dns
         case status
         case toggleStatus
 
@@ -37,17 +38,18 @@ class TunnelViewModel {
         .generateKeyPair
     ]
 
+    //节点
     enum PeerField: CaseIterable {
         case publicKey
-        case preSharedKey
-        case endpoint
-        case persistentKeepAlive
-        case allowedIPs
-        case rxBytes
-        case txBytes
-        case lastHandshakeTime
-        case excludePrivateIPs
-        case deletePeer
+        case preSharedKey   //预共享密钥
+        case endpoint       //对端：需要连接的ip地址+端口
+        case persistentKeepAlive    //保活时间，客服端与服务端间隔时间通信
+        case allowedIPs             //路由的ip地址段
+        case rxBytes                //上传字节
+        case txBytes                //下行字节
+        case lastHandshakeTime      //最后一次握手时间
+        case excludePrivateIPs      //排除局域网
+        case deletePeer             //删除节点
 
         var localizedUIString: String {
             switch self {
@@ -84,12 +86,14 @@ class TunnelViewModel {
         var peersInsertedIndices: [Int]
     }
 
+    //接口数据
     class InterfaceData {
-        var scratchpad = [InterfaceField: String]()
+        var scratchpad = [InterfaceField: String]() //储存数据的字典
         var fieldsWithError = Set<InterfaceField>()
-        var validatedConfiguration: InterfaceConfiguration?
+        var validatedConfiguration: InterfaceConfiguration?     //接口模型，执行save操作后才有值
         var validatedName: String?
 
+        //给InterfaceData赋值
         subscript(field: InterfaceField) -> String {
             get {
                 if scratchpad.isEmpty {
@@ -106,13 +110,16 @@ class TunnelViewModel {
                 if stringValue.isEmpty {
                     scratchpad.removeValue(forKey: field)
                 } else {
-                    scratchpad[field] = stringValue
+                    scratchpad[field] = stringValue //储存到字典中
                 }
-                if field == .privateKey {
+                if field == .privateKey { //如果输入的是私钥
                     if stringValue.count == TunnelViewModel.keyLengthInBase64,
+                       //privateKey赋值value: stringValue
                        let privateKey = PrivateKey(base64Key: stringValue) {
+                        //直接生成publickey
                         scratchpad[.publicKey] = privateKey.publicKey.base64Key
                     } else {
+                        //删除publicKey
                         scratchpad.removeValue(forKey: .publicKey)
                     }
                 }
@@ -152,6 +159,7 @@ class TunnelViewModel {
                 return .saved((name, config))
             }
             fieldsWithError.removeAll()
+            //scratchpad 储存数据的字典
             guard let name = scratchpad[.name]?.trimmingCharacters(in: .whitespacesAndNewlines), (!name.isEmpty) else {
                 fieldsWithError.insert(.name)
                 return .error(tr("alertInvalidInterfaceMessageNameRequired"))
@@ -164,6 +172,8 @@ class TunnelViewModel {
                 fieldsWithError.insert(.privateKey)
                 return .error(tr("alertInvalidInterfaceMessagePrivateKeyInvalid"))
             }
+
+            //初始化接口数据模型
             var config = InterfaceConfiguration(privateKey: privateKey)
             var errorMessages = [String]()
             if let addressesString = scratchpad[.addresses] {
@@ -249,6 +259,7 @@ class TunnelViewModel {
         }
     }
 
+    //节点数据
     class PeerData {
         var index: Int
         var scratchpad = [PeerField: String]()
@@ -329,6 +340,7 @@ class TunnelViewModel {
             return scratchpad
         }
 
+        //保存节点配置
         func save() -> SaveResult<PeerConfiguration> {
             if let validatedConfiguration = validatedConfiguration {
                 return .saved(validatedConfiguration)
@@ -407,6 +419,7 @@ class TunnelViewModel {
             "194.0.0.0/7", "196.0.0.0/6", "200.0.0.0/5", "208.0.0.0/4"
         ]
 
+        //是否排除局域网，默认false
         static func excludePrivateIPsFieldStates(isSinglePeer: Bool, allowedIPs: Set<String>) -> (shouldAllowExcludePrivateIPsControl: Bool, excludePrivateIPsValue: Bool) {
             guard isSinglePeer else {
                 return (shouldAllowExcludePrivateIPsControl: false, excludePrivateIPsValue: false)
@@ -485,9 +498,10 @@ class TunnelViewModel {
         case error(String)
     }
 
-    private(set) var interfaceData: InterfaceData
-    private(set) var peersData: [PeerData]
+    private(set) var interfaceData: InterfaceData   //接口数据
+    private(set) var peersData: [PeerData]          //节点数据
 
+    //数据模型
     init(tunnelConfiguration: TunnelConfiguration?) {
         let interfaceData = InterfaceData()
         var peersData = [PeerData]()
@@ -509,6 +523,7 @@ class TunnelViewModel {
         self.peersData = peersData
     }
 
+    //添加一个空的peer
     func appendEmptyPeer() {
         let peer = PeerData(index: peersData.count)
         peersData.append(peer)
@@ -542,6 +557,7 @@ class TunnelViewModel {
         return true
     }
 
+    //保存配置
     func save() -> SaveResult<TunnelConfiguration> {
         let interfaceSaveResult = interfaceData.save()
         let peerSaveResults = peersData.map { $0.save() } // Save all, to help mark erroring fields in red

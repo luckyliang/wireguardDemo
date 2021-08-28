@@ -31,6 +31,7 @@ class TunnelEditTableViewController: UITableViewController {
 
     weak var delegate: TunnelEditTableViewControllerDelegate?
 
+    //分组
     let interfaceFieldsBySection: [[TunnelViewModel.InterfaceField]] = [
         [.name],
         [.privateKey, .publicKey, .generateKeyPair],
@@ -50,8 +51,8 @@ class TunnelEditTableViewController: UITableViewController {
     ]
 
     let tunnelsManager: TunnelsManager
-    let tunnel: TunnelContainer?
-    let tunnelViewModel: TunnelViewModel
+    let tunnel: TunnelContainer? //详情展示
+    let tunnelViewModel: TunnelViewModel //通道ViewModel
     var onDemandViewModel: ActivateOnDemandViewModel
     private var sections = [Section]()
 
@@ -103,6 +104,7 @@ class TunnelEditTableViewController: UITableViewController {
         sections.append(.onDemand)
     }
 
+    //点击保存按钮
     @objc func saveTapped() {
         tableView.endEditing(false)
         let tunnelSaveResult = tunnelViewModel.save()
@@ -114,6 +116,7 @@ class TunnelEditTableViewController: UITableViewController {
             tableView.reloadData() // Highlight erroring fields
         case .saved(let tunnelConfiguration):
             let onDemandOption = onDemandViewModel.toOnDemandOption()
+            //如果编辑
             if let tunnel = tunnel {
                 // We're modifying an existing tunnel
                 tunnelsManager.modify(tunnel: tunnel, tunnelConfiguration: tunnelConfiguration, onDemandOption: onDemandOption) { [weak self] error in
@@ -125,6 +128,7 @@ class TunnelEditTableViewController: UITableViewController {
                     }
                 }
             } else {
+                //新增
                 // We're adding a new tunnel
                 tunnelsManager.add(tunnelConfiguration: tunnelConfiguration, onDemandOption: onDemandOption) { [weak self] result in
                     switch result {
@@ -208,6 +212,7 @@ extension TunnelEditTableViewController {
         }
     }
 
+    //生成密钥对
     private func generateKeyPairCell(for tableView: UITableView, at indexPath: IndexPath, with field: TunnelViewModel.InterfaceField) -> UITableViewCell {
         let cell: ButtonCell = tableView.dequeueReusableCell(for: indexPath)
         cell.buttonText = field.localizedUIString
@@ -225,13 +230,14 @@ extension TunnelEditTableViewController {
         return cell
     }
 
+    //公钥
     private func publicKeyCell(for tableView: UITableView, at indexPath: IndexPath, with field: TunnelViewModel.InterfaceField) -> UITableViewCell {
         let cell: TunnelEditKeyValueCell = tableView.dequeueReusableCell(for: indexPath)
         cell.key = field.localizedUIString
         cell.value = tunnelViewModel.interfaceData[field]
         return cell
     }
-
+    //接口key Value Cell
     private func interfaceFieldKeyValueCell(for tableView: UITableView, at indexPath: IndexPath, with field: TunnelViewModel.InterfaceField) -> UITableViewCell {
         let cell: TunnelEditEditableKeyValueCell = tableView.dequeueReusableCell(for: indexPath)
         cell.key = field.localizedUIString
@@ -258,7 +264,8 @@ extension TunnelEditTableViewController {
         cell.isValueValid = (!tunnelViewModel.interfaceData.fieldsWithError.contains(field))
         // Bind values to view model
         cell.value = tunnelViewModel.interfaceData[field]
-        if field == .dns { // While editing DNS, you might directly set exclude private IPs
+
+        if field == .dns { // 可先设置局域网ip地址/32这种形式，可自动计算
             cell.onValueBeingEdited = { [weak self] value in
                 self?.tunnelViewModel.interfaceData[field] = value
             }

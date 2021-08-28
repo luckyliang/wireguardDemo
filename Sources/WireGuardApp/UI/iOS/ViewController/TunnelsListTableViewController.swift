@@ -142,6 +142,7 @@ class TunnelsListTableViewController: UIViewController {
         }
     }
 
+//添加按钮
     @objc func addButtonTapped(sender: AnyObject) {
         guard tunnelsManager != nil else { return }
 
@@ -155,7 +156,7 @@ class TunnelsListTableViewController: UIViewController {
             self?.presentViewControllerForScanningQRCode()
         }
         alert.addAction(scanQRCodeAction)
-
+        //手动创建
         let createFromScratchAction = UIAlertAction(title: tr("addTunnelMenuFromScratch"), style: .default) { [weak self] _ in
             if let self = self, let tunnelsManager = self.tunnelsManager {
                 self.presentViewControllerForTunnelCreation(tunnelsManager: tunnelsManager)
@@ -175,6 +176,7 @@ class TunnelsListTableViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 
+    //设置按钮
     @objc func settingsButtonTapped(sender: UIBarButtonItem) {
         guard tunnelsManager != nil else { return }
 
@@ -184,6 +186,7 @@ class TunnelsListTableViewController: UIViewController {
         present(settingsNC, animated: true)
     }
 
+    //跳转到手动创建页面
     func presentViewControllerForTunnelCreation(tunnelsManager: TunnelsManager) {
         let editVC = TunnelEditTableViewController(tunnelsManager: tunnelsManager)
         let editNC = UINavigationController(rootViewController: editVC)

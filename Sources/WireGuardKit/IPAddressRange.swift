@@ -5,8 +5,8 @@ import Foundation
 import Network
 
 public struct IPAddressRange {
-    public let address: IPAddress
-    public let networkPrefixLength: UInt8
+    public let address: IPAddress               //ip地址
+    public let networkPrefixLength: UInt8       //ip前缀长度，根据这两个值可以计算出dns段
 
     init(address: IPAddress, networkPrefixLength: UInt8) {
         self.address = address

@@ -5,13 +5,13 @@ import Foundation
 
 public struct PeerConfiguration {
     public var publicKey: PublicKey
-    public var preSharedKey: PreSharedKey?
-    public var allowedIPs = [IPAddressRange]()
-    public var endpoint: Endpoint?
-    public var persistentKeepAlive: UInt16?
+    public var preSharedKey: PreSharedKey?          //预共享密钥
+    public var allowedIPs = [IPAddressRange]()      //路由段
+    public var endpoint: Endpoint?                  //对端地址
+    public var persistentKeepAlive: UInt16?         //连接保活间隔
     public var rxBytes: UInt64?
     public var txBytes: UInt64?
-    public var lastHandshakeTime: Date?
+    public var lastHandshakeTime: Date?             //最后一次握手时间
 
     public init(publicKey: PublicKey) {
         self.publicKey = publicKey

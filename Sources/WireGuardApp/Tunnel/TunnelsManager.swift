@@ -5,6 +5,7 @@ import Foundation
 import NetworkExtension
 import os.log
 
+//通道增删改查回调
 protocol TunnelsManagerListDelegate: class {
     func tunnelAdded(at index: Int)
     func tunnelModified(at index: Int)
@@ -12,6 +13,7 @@ protocol TunnelsManagerListDelegate: class {
     func tunnelRemoved(at index: Int, tunnel: TunnelContainer)
 }
 
+//连接状态
 protocol TunnelsManagerActivationDelegate: class {
     func tunnelActivationAttemptFailed(tunnel: TunnelContainer, error: TunnelsManagerActivationAttemptError) // startTunnel wasn't called or failed
     func tunnelActivationAttemptSucceeded(tunnel: TunnelContainer) // startTunnel succeeded
@@ -19,10 +21,13 @@ protocol TunnelsManagerActivationDelegate: class {
     func tunnelActivationSucceeded(tunnel: TunnelContainer) // status changed to connected
 }
 
+//管理类
 class TunnelsManager {
+    //通道数组
     private var tunnels: [TunnelContainer]
     weak var tunnelsListDelegate: TunnelsManagerListDelegate?
     weak var activationDelegate: TunnelsManagerActivationDelegate?
+
     private var statusObservationToken: NotificationToken?
     private var waiteeObservationToken: NSKeyValueObservation?
     private var configurationsObservationToken: NotificationToken?
@@ -33,10 +38,12 @@ class TunnelsManager {
         startObservingTunnelConfigurations()
     }
 
+    //创建
     static func create(completionHandler: @escaping (Result<TunnelsManager, TunnelsManagerError>) -> Void) {
         #if targetEnvironment(simulator)
         completionHandler(.success(TunnelsManager(tunnelProviders: MockTunnels.createMockTunnels())))
         #else
+        //从vpn偏好中读取
         NETunnelProviderManager.loadAllFromPreferences { managers, error in
             if let error = error {
                 wg_log(.error, message: "Failed to load tunnel provider managers: \(error)")
@@ -48,9 +55,11 @@ class TunnelsManager {
             var refs: Set<Data> = []
             var tunnelNames: Set<String> = []
             for (index, tunnelManager) in tunnelManagers.enumerated().reversed() {
+                //名称
                 if let tunnelName = tunnelManager.localizedDescription {
                     tunnelNames.insert(tunnelName)
                 }
+                //协议
                 guard let proto = tunnelManager.protocolConfiguration as? NETunnelProviderProtocol else { continue }
                 if proto.migrateConfigurationIfNeeded(called: tunnelManager.localizedDescription ?? "unknown") {
                     tunnelManager.saveToPreferences { _ in }
@@ -83,7 +92,7 @@ class TunnelsManager {
         }
         #endif
     }
-
+    //从新加载
     func reload() {
         NETunnelProviderManager.loadAllFromPreferences { [weak self] managers, _ in
             guard let self = self else { return }
@@ -117,6 +126,7 @@ class TunnelsManager {
         }
     }
 
+    //添加
     func add(tunnelConfiguration: TunnelConfiguration, onDemandOption: ActivateOnDemandOption = .off, completionHandler: @escaping (Result<TunnelContainer, TunnelsManagerError>) -> Void) {
         let tunnelName = tunnelConfiguration.name ?? ""
         if tunnelName.isEmpty {
@@ -168,6 +178,7 @@ class TunnelsManager {
         }
     }
 
+    //同时添加多个配置
     func addMultiple(tunnelConfigurations: [TunnelConfiguration], completionHandler: @escaping (UInt, TunnelsManagerError?) -> Void) {
         // Temporarily pause observation of changes to VPN configurations to prevent the feedback
         // loop that causes `reload()` to be called on each newly added tunnel, which significantly
@@ -206,6 +217,7 @@ class TunnelsManager {
         }
     }
 
+    //修改配
     func modify(tunnel: TunnelContainer, tunnelConfiguration: TunnelConfiguration, onDemandOption: ActivateOnDemandOption, completionHandler: @escaping (TunnelsManagerError?) -> Void) {
         let tunnelName = tunnelConfiguration.name ?? ""
         if tunnelName.isEmpty {
@@ -279,6 +291,7 @@ class TunnelsManager {
         }
     }
 
+    //移除
     func remove(tunnel: TunnelContainer, completionHandler: @escaping (TunnelsManagerError?) -> Void) {
         let tunnelProviderManager = tunnel.tunnelProvider
         #if os(macOS)
@@ -342,6 +355,7 @@ class TunnelsManager {
         }
     }
 
+    //获取通道相关方法
     func numberOfTunnels() -> Int {
         return tunnels.count
     }
@@ -431,6 +445,7 @@ class TunnelsManager {
         }
     }
 
+    //监听通道连接状态
     private func startObservingTunnelStatuses() {
         statusObservationToken = NotificationCenter.default.observe(name: .NEVPNStatusDidChange, object: nil, queue: OperationQueue.main) { [weak self] statusChangeNotification in
             guard let self = self,
@@ -462,7 +477,7 @@ class TunnelsManager {
             tunnel.refreshStatus()
         }
     }
-
+    //监听配置是否发生改变
     func startObservingTunnelConfigurations() {
         configurationsObservationToken = NotificationCenter.default.observe(name: .NEVPNConfigurationChange, object: nil, queue: OperationQueue.main) { [weak self] _ in
             DispatchQueue.main.async { [weak self] in
@@ -496,7 +511,7 @@ private func lastErrorTextFromNetworkExtension(for tunnel: TunnelContainer) -> (
 class TunnelContainer: NSObject {
     @objc dynamic var name: String
     @objc dynamic var status: TunnelStatus
-
+    //按需激活，默认false表示一直连接
     @objc dynamic var isActivateOnDemandEnabled: Bool
 
     var isAttemptingActivation = false {
@@ -521,11 +536,13 @@ class TunnelContainer: NSObject {
         }
     }
     var activationAttemptId: String?
+    //激活定时器
     var activationTimer: Timer?
     var deactivationTimer: Timer?
 
     fileprivate var tunnelProvider: NETunnelProviderManager
 
+    //通道配置
     var tunnelConfiguration: TunnelConfiguration? {
         return tunnelProvider.tunnelConfiguration
     }
@@ -662,8 +679,9 @@ extension NETunnelProviderManager {
     }
 
     func setTunnelConfiguration(_ tunnelConfiguration: TunnelConfiguration) {
+        //配置协议
         protocolConfiguration = NETunnelProviderProtocol(tunnelConfiguration: tunnelConfiguration, previouslyFrom: protocolConfiguration)
-        localizedDescription = tunnelConfiguration.name
+        localizedDescription = tunnelConfiguration.name //服务器名称
         objc_setAssociatedObject(self, &NETunnelProviderManager.cachedConfigKey, tunnelConfiguration, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 

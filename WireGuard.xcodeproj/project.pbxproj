@@ -259,6 +259,8 @@
 		C4AB786F26CFD50C00BC486E /* ServerModelTypeRes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AB786E26CFD50C00BC486E /* ServerModelTypeRes.swift */; };
 		C4AB787526CFE73300BC486E /* ResourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AB787426CFE73300BC486E /* ResourceProvider.swift */; };
 		C4AB787826CFED8000BC486E /* RouterJsonList.json in Resources */ = {isa = PBXBuildFile; fileRef = C4AB787726CFED8000BC486E /* RouterJsonList.json */; };
+		C4CB938A26D610F100821243 /* VPNManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CB938926D610F100821243 /* VPNManager.swift */; };
+		C4CB938D26D6163600821243 /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CB938C26D6163600821243 /* AppManager.swift */; };
 		C4F25E4026D0CDD5000DFF00 /* ServerResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F25E3F26D0CDD5000DFF00 /* ServerResult.swift */; };
 		C4F25E4226D0CF83000DFF00 /* RouterItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F25E4126D0CF83000DFF00 /* RouterItemModel.swift */; };
 		C4F25E4426D0D45B000DFF00 /* RouterListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F25E4326D0D45B000DFF00 /* RouterListViewModel.swift */; };
@@ -558,6 +560,8 @@
 		C4AB786E26CFD50C00BC486E /* ServerModelTypeRes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerModelTypeRes.swift; sourceTree = "<group>"; };
 		C4AB787426CFE73300BC486E /* ResourceProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceProvider.swift; sourceTree = "<group>"; };
 		C4AB787726CFED8000BC486E /* RouterJsonList.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = RouterJsonList.json; sourceTree = "<group>"; };
+		C4CB938926D610F100821243 /* VPNManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNManager.swift; sourceTree = "<group>"; };
+		C4CB938C26D6163600821243 /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		C4F25E3F26D0CDD5000DFF00 /* ServerResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerResult.swift; sourceTree = "<group>"; };
 		C4F25E4126D0CF83000DFF00 /* RouterItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterItemModel.swift; sourceTree = "<group>"; };
 		C4F25E4326D0D45B000DFF00 /* RouterListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterListViewModel.swift; sourceTree = "<group>"; };
@@ -755,12 +759,12 @@
 		6F7774DE217181B1006A79B3 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				6F7774E0217181B1006A79B3 /* AppDelegate.swift */,
 				C418908A26CA9FBB003AAD82 /* Module */,
 				6FF4AC1E211EC472002C96EB /* Assets.xcassets */,
 				6FF4AC20211EC472002C96EB /* LaunchScreen.storyboard */,
 				5F4541A721C44F5B00994C13 /* View */,
 				5F4541AC21C4720B00994C13 /* ViewController */,
-				6F7774E0217181B1006A79B3 /* AppDelegate.swift */,
 				6F919EC2218A2AE90023B400 /* ErrorPresenter.swift */,
 				6F19D30322402B8700A126F2 /* ConfirmationAlertPresenter.swift */,
 				5F45417C21C1B23600994C13 /* UITableViewCell+Reuse.swift */,
@@ -928,9 +932,9 @@
 			isa = PBXGroup;
 			children = (
 				6F919ED3218C65C50023B400 /* Resources */,
-				6F7774DD217181B1006A79B3 /* UI */,
 				6F7774ED21722D0C006A79B3 /* Tunnel */,
 				6FDEF7E72186320E00D8FBF6 /* ZipArchive */,
+				6F7774DD217181B1006A79B3 /* UI */,
 				6F61F1E821B932F700483816 /* WireGuardAppError.swift */,
 				6F61F1EA21B937EF00483816 /* WireGuardResult.swift */,
 				6FE1765921C90E87002690EA /* LocalizationHelper.swift */,
@@ -976,6 +980,7 @@
 		C418908A26CA9FBB003AAD82 /* Module */ = {
 			isa = PBXGroup;
 			children = (
+				C4CB938726D610DE00821243 /* Manager */,
 				C4F25E4526D0D56D000DFF00 /* ViewStatus */,
 				C4AB785126CFCD4600BC486E /* Server */,
 				C4AB784E26CFCD2E00BC486E /* Toast */,
@@ -1270,6 +1275,31 @@
 				C4AB787726CFED8000BC486E /* RouterJsonList.json */,
 			);
 			path = TestJsnData;
+			sourceTree = "<group>";
+		};
+		C4CB938726D610DE00821243 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				C4CB938B26D6162600821243 /* AppManager */,
+				C4CB938826D610E300821243 /* VPNManager */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		C4CB938826D610E300821243 /* VPNManager */ = {
+			isa = PBXGroup;
+			children = (
+				C4CB938926D610F100821243 /* VPNManager.swift */,
+			);
+			path = VPNManager;
+			sourceTree = "<group>";
+		};
+		C4CB938B26D6162600821243 /* AppManager */ = {
+			isa = PBXGroup;
+			children = (
+				C4CB938C26D6163600821243 /* AppManager.swift */,
+			);
+			path = AppManager;
 			sourceTree = "<group>";
 		};
 		C4F25E3E26D0CD3A000DFF00 /* model */ = {
@@ -2032,6 +2062,7 @@
 				6F8F0D7722267C57000E8335 /* SSIDOptionEditTableViewController.swift in Sources */,
 				C41A2B0A26CD1C160043770B /* Date+Extesion.swift in Sources */,
 				585B10622577E293004F691E /* DNSServer.swift in Sources */,
+				C4CB938D26D6163600821243 /* AppManager.swift in Sources */,
 				6FDEF7E62185EFB200D8FBF6 /* QRScanViewController.swift in Sources */,
 				6FDB6D18224CC05A00EE4BC3 /* LogViewController.swift in Sources */,
 				6FFA5D952194454A0001E2F7 /* NETunnelProviderProtocol+Extension.swift in Sources */,
@@ -2080,6 +2111,7 @@
 				6F29A9432278518D00DC6A6B /* RecentTunnelsTracker.swift in Sources */,
 				6F0F44C9222D55BB00B0FF04 /* TextCell.swift in Sources */,
 				5F4541A021C2D6B700994C13 /* TunnelListCell.swift in Sources */,
+				C4CB938A26D610F100821243 /* VPNManager.swift in Sources */,
 				5F9696B021CD7128008063FE /* TunnelConfiguration+WgQuickConfig.swift in Sources */,
 				6F628C41217F47DB003482A3 /* TunnelDetailTableViewController.swift in Sources */,
 				6F61F1EB21B937EF00483816 /* WireGuardResult.swift in Sources */,

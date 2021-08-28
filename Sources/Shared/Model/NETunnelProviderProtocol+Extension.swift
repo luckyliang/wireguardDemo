@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright © 2018-2021 WireGuard LLC. All Rights Reserved.
 
+//VPN协议扩展
 import NetworkExtension
 
 enum PacketTunnelProviderError: String, Error {
@@ -12,6 +13,7 @@ enum PacketTunnelProviderError: String, Error {
 }
 
 extension NETunnelProviderProtocol {
+    //网络协议配置
     convenience init?(tunnelConfiguration: TunnelConfiguration, previouslyFrom old: NEVPNProtocol? = nil) {
         self.init()
 
@@ -27,8 +29,11 @@ extension NETunnelProviderProtocol {
         #endif
 
         let endpoints = tunnelConfiguration.peers.compactMap { $0.endpoint }
+
+        //vpn偏好设置中显示的服务器地址，生产环境中请换成其他的，避免暴露
         if endpoints.count == 1 {
-            serverAddress = endpoints[0].stringRepresentation
+//            serverAddress = endpoints[0].stringRepresentation
+            serverAddress = name
         } else if endpoints.isEmpty {
             serverAddress = "Unspecified"
         } else {

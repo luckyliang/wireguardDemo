@@ -4,6 +4,7 @@
 import UIKit
 
 class TunnelListCell: UITableViewCell {
+
     var tunnel: TunnelContainer? {
         didSet {
             // Bind to the tunnel's name

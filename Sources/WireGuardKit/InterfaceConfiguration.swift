@@ -4,12 +4,13 @@
 import Foundation
 import Network
 
+//接口配置模型
 public struct InterfaceConfiguration {
-    public var privateKey: PrivateKey
-    public var addresses = [IPAddressRange]()
-    public var listenPort: UInt16?
-    public var mtu: UInt16?
-    public var dns = [DNSServer]()
+    public var privateKey: PrivateKey           //必须
+    public var addresses = [IPAddressRange]()   //私有ip地址,最好让后台返回
+    public var listenPort: UInt16?              //监听端口，自动无需配置
+    public var mtu: UInt16?                     //自动
+    public var dns = [DNSServer]()              //可选
     public var dnsSearch = [String]()
 
     public init(privateKey: PrivateKey) {
